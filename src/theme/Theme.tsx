@@ -137,6 +137,10 @@ const Theme = {
     splash_logo: require('../resources/images/splashLogo.png'),
     search_icon: require('../resources/images/search.png'),
   },
+
+  lottie: {
+    loading: require('../resources/lottie/loading.json'),
+  },
 };
 
 export default Theme;

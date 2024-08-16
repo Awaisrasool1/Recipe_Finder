@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = 'b2ca08de1e854d3fab592ebecc8da8e7';
+const API_KEY = '4b4f2123b8fe49c7945807721ad2ff83';
 
 export const fetchRecipes = async (query: any) => {
   const response = await axios.get(
@@ -16,9 +16,16 @@ export const fetchRecipeDetails = async (id: any) => {
   return response.data;
 };
 
-export const fetchRecipesByCategory = async (cuisine:any, mealType:any) => {
+export const fetchRecipesByCategory = async (cuisine: any, mealType: any) => {
   const response = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?cuisine=${cuisine}&mealType=${mealType}&apiKey=${API_KEY}`
+    `https://api.spoonacular.com/recipes/complexSearch?cuisine=${cuisine}&mealType=${mealType}&apiKey=${API_KEY}`,
   );
   return response.data.results;
+};
+
+export const rendomRecipe = async () => {
+  const response = await axios.get(
+    `https://api.spoonacular.com/recipes/random?number=10&apiKey=${API_KEY}`,
+  );
+  return response.data.recipes;
 };

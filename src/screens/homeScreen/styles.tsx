@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
     marginLeft: Theme.fontSize.size10,
     marginBottom: Theme.fontSize.size10,
   },
+  loadingContainer:{
+    alignSelf:'center',
+    marginTop:Theme.fontSize.size30
+  }
 });
 
 export default styles;

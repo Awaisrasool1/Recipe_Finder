@@ -2,13 +2,16 @@ import React from 'react';
 import {Text, Image, StyleSheet, Pressable, View} from 'react-native';
 import Theme from '../../theme/Theme';
 import MasonryList from '@react-native-seoul/masonry-list';
-import Animated, {FadeIn, ZoomInDown} from 'react-native-reanimated';
+import Animated, {FadeIn} from 'react-native-reanimated';
 
-const RenderItem = ({item, index}: any) => {
+const RenderItem = ({item, index, onRecipeSelect}: any) => {
   let second = index % 2 == 0;
   return (
     <Animated.View entering={FadeIn.delay(index * 100)}>
       <Pressable
+        onPress={() => {
+          onRecipeSelect(item.id);
+        }}
         style={[
           styles.Container,
           {marginLeft: second ? 0 : 5, marginRight: second ? 5 : 0},
@@ -32,7 +35,9 @@ const RecipeList = ({recipes, onRecipeSelect, onFavorite}: any) => {
       keyExtractor={(item): string => item.id}
       numColumns={2}
       showsVerticalScrollIndicator={false}
-      renderItem={({item, i}: any) => <RenderItem item={item} index={i} />}
+      renderItem={({item, i}: any) => (
+        <RenderItem item={item} index={i} onRecipeSelect={onRecipeSelect} />
+      )}
       onEndReachedThreshold={0.1}
     />
   );

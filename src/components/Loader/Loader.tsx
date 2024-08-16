@@ -1,21 +1,19 @@
-import React, {FC} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Overlay} from 'react-native-elements';
 import Theme from '../../theme/Theme';
-import { useGlobal } from '../../context/GlobalContext';
 import LottieView from 'lottie-react-native';
-let theme = Theme()
-interface LoaderProps {
-  isLoading: boolean;
-}
 
-const Loader: FC<LoaderProps> = props => {
-  const globalContext = useGlobal();
+const Loader = (props: any) => {
   return (
     <Overlay isVisible={props.isLoading}>
       <View style={styles.viewLoader}>
-        {/* <ActivityIndicator size="large" color={globalContext.color} /> */}
-        <LottieView style={{height:130, width:130}} source={theme.lottie.LOADING} autoPlay loop={true} />
+        <LottieView
+          style={{height: 40, width: 40}}
+          source={Theme.lottie.loading}
+          autoPlay
+          loop={true}
+        />
       </View>
     </Overlay>
   );
@@ -24,10 +22,10 @@ const Loader: FC<LoaderProps> = props => {
 export default Loader;
 const styles = StyleSheet.create({
   viewLoader: {
-    backgroundColor: theme.colors.white,
-    height: theme.responsiveSize.size100,
-    width: theme.responsiveSize.size100,
-    borderRadius: theme.responsiveSize.size20,
+    backgroundColor: Theme.colors.white,
+    height: Theme.fontSize.size100,
+    width: Theme.fontSize.size100,
+    borderRadius: Theme.fontSize.size20,
     justifyContent: 'center',
     alignItems: 'center',
   },

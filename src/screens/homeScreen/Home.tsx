@@ -1,20 +1,32 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, ToastAndroid} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
-import {Filter} from '../../components/filter';
 import {InputText} from '../../components/inputText';
-import {fetchRecipes} from '../../services/Get';
+import {fetchRecipes, rendomRecipe} from '../../services/Get';
 import {RecipeList} from '../../components/recipeList';
 import {Constants} from '../../utils';
 import {Categorie} from '../../components/categorie';
+import Theme from '../../theme/Theme';
+import LottieView from 'lottie-react-native';
 
 export default function HomeScreen({navigation}: any) {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  // useEffect(() => {
-  //   handleSearch('pasta');
-  // }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const res = await rendomRecipe();
+      setRecipes(res);
+      setLoading(false);
+    } catch (e: any) {
+      ToastAndroid.show(e.response.data.message, ToastAndroid.LONG);
+      setLoading(false);
+    }
+  };
 
   const handleSearch = async (query: any) => {
     setLoading(true);
@@ -22,22 +34,14 @@ export default function HomeScreen({navigation}: any) {
       const data = await fetchRecipes(query);
       setRecipes(data);
       setLoading(false);
-    } catch (e) {
-      console.log(e);
+    } catch (e:any) {
+      ToastAndroid.show(e.response.data.message, ToastAndroid.LONG);
       setLoading(false);
     }
   };
 
-  const handleFilter = (filter: any) => {
-    // Implement filter logic here
-  };
-
   const handleRecipeSelect = (id: any) => {
     navigation.navigate(Constants.Recipe_Details, {id});
-  };
-
-  const handleFavorite = (recipe: any) => {
-    // Implement favorite logic here
   };
 
   return (
@@ -54,13 +58,16 @@ export default function HomeScreen({navigation}: any) {
       />
       <Text style={styles.CategorieText}>Recipes</Text>
       {loading ? (
-        <Text>Loading...</Text>
+        <View style={styles.loadingContainer}>
+          <LottieView
+            style={{height: 40, width: 40}}
+            source={Theme.lottie.loading}
+            autoPlay
+            loop={true}
+          />
+        </View>
       ) : (
-        <RecipeList
-          recipes={recipes}
-          onRecipeSelect={handleRecipeSelect}
-          onFavorite={handleFavorite}
-        />
+        <RecipeList recipes={recipes} onRecipeSelect={handleRecipeSelect} />
       )}
     </ScrollView>
   );
