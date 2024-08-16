@@ -1,40 +1,58 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Animated, Image} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, StyleSheet, Animated, Image, Text} from 'react-native';
 import Theme from '../../theme/Theme';
+import Animateds, {FadeInDown, FadeInUp} from 'react-native-reanimated';
+import {Constants} from '../../utils';
 
-const SplashScreen = () => {
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const opacityAnim = useRef(new Animated.Value(0)).current;
+const SplashScreen = (props: any) => {
+  const ring1 = useRef(new Animated.Value(0)).current;
+  const ring2 = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(scaleAnim, {
-        toValue: 10,
-        duration: 1500,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacityAnim, {
+    setTimeout(() => {
+      Animated.spring(ring1, {
         toValue: 1,
-        duration: 1500,
-        useNativeDriver: true,
-      }),
-    ]).start();
+        useNativeDriver: false,
+      }).start();
+      //
+      Animated.spring(ring2, {
+        toValue: 1,
+        useNativeDriver: false,
+      }).start();
+    }, 250);
+    setTimeout(() => {
+      props.navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: Constants.Home_Screen,
+          },
+        ],
+      });
+    }, 900);
   }, []);
 
+  const padding = ring1.interpolate({
+    inputRange: [0, 8],
+    outputRange: ['0%', '100%'],
+  });
+  const padding1 = ring2.interpolate({
+    inputRange: [0, 7],
+    outputRange: ['0%', '100%'],
+  });
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[
-          styles.circle,
-          {
-            transform: [{scale: scaleAnim}],
-            opacity: opacityAnim,
-          },
-        ]}
-      />
+      <Animated.View style={[styles.circle, {padding}]}>
+        <Animated.View
+          style={[
+            styles.circle,
+            {backgroundColor: '#f5b856', padding: padding1},
+          ]}>
+          <Image source={Theme.icons.splash_logo} style={styles.image} />
+        </Animated.View>
+      </Animated.View>
       <View style={styles.content}>
-        <Image source={Theme.icons.splash_logo} style={styles.image} />
-        <Text style={styles.title}>Foody</Text>
+        <Text style={styles.title}>Recipe Finder</Text>
         <Text style={styles.subtitle}>Food is always right</Text>
       </View>
     </View>
@@ -49,31 +67,30 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.colors.AppColor,
   },
   circle: {
-    position: 'absolute',
-    width: Theme.fontSize.size100,
-    height: Theme.fontSize.size100,
-    backgroundColor:Theme.colors.AppColor,
-    borderRadius: Theme.fontSize.size50,
-    zIndex: -1,
+    backgroundColor: '#f5a632',
+    borderRadius: 200,
   },
   content: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: Theme.fontSize.size100,
-    height: Theme.fontSize.size100,
+    width: Theme.fontSize.size170,
+    height: Theme.fontSize.size170,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: Theme.fontSize.size18,
+    fontWeight: '700',
     color: Theme.colors.white,
-    marginTop: 20,
+    marginTop: Theme.fontSize.size20,
+    letterSpacing: 1,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: Theme.fontSize.size14,
     color: Theme.colors.white,
+    fontWeight: '600',
     marginTop: Theme.fontSize.size10,
+    letterSpacing: 1,
   },
 });
 

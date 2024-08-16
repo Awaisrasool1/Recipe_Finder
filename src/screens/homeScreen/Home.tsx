@@ -1,27 +1,31 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import styles from './styles';
-import { Filter } from '../../components/filter';
-import { RecipeSearch } from '../../components/recipeSearch';
-import { fetchRecipes } from '../../services/Get';
-import { RecipeList } from '../../components/recipeList';
+import {Filter} from '../../components/filter';
+import {InputText} from '../../components/inputText';
+import {fetchRecipes} from '../../services/Get';
+import {RecipeList} from '../../components/recipeList';
+import {Constants} from '../../utils';
+import {Categorie} from '../../components/categorie';
 
-
-export default function HomeScreen({navigation}:any) {
+export default function HomeScreen({navigation}: any) {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  // useEffect(() => {
+  //   handleSearch('pasta');
+  // }, []);
 
   const handleSearch = async (query: any) => {
     setLoading(true);
     try {
       const data = await fetchRecipes(query);
       setRecipes(data);
-      setError('');
+      setLoading(false);
     } catch (e) {
-      setError('Something went wrong!');
+      console.log(e);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleFilter = (filter: any) => {
@@ -29,7 +33,7 @@ export default function HomeScreen({navigation}:any) {
   };
 
   const handleRecipeSelect = (id: any) => {
-    navigation.navigate('RecipeDetails', {id});
+    navigation.navigate(Constants.Recipe_Details, {id});
   };
 
   const handleFavorite = (recipe: any) => {
@@ -37,13 +41,20 @@ export default function HomeScreen({navigation}:any) {
   };
 
   return (
-    <View style={styles.container}>
-      <RecipeSearch onSearch={handleSearch} />
-      {/* <Filter onFilter={handleFilter} /> */}
+    <ScrollView style={styles.container}>
+      <View style={{marginTop: 20}} />
+      <Text style={styles.heading}>Make your own food, stay at home</Text>
+      <InputText />
+      <View style={{marginTop: 20}} />
+      <Text style={styles.CategorieText}>Categorie</Text>
+      <Categorie
+        handleSearch={(i: any) => {
+          handleSearch(i);
+        }}
+      />
+      <Text style={styles.CategorieText}>Recipes</Text>
       {loading ? (
         <Text>Loading...</Text>
-      ) : error ? (
-        <Text>{error}</Text>
       ) : (
         <RecipeList
           recipes={recipes}
@@ -51,6 +62,6 @@ export default function HomeScreen({navigation}:any) {
           onFavorite={handleFavorite}
         />
       )}
-    </View>
+    </ScrollView>
   );
 }

@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@react-native-community/blur": "^4.4.0",
+    "@react-native-seoul/masonry-list": "^1.4.2",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "axios": "^1.7.4",
+    "i": "^0.3.7",
+    "npm": "^10.8.2",
     "react": "18.3.1",
     "react-native": "0.75.1",
     "react-native-gesture-handler": "^2.18.1",

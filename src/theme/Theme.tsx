@@ -10,7 +10,7 @@ const Theme = {
     blueColor: '#3085d6',
     redColor: '#dd3333',
 
-    AppColor: '#FFA500',
+    AppColor: '#f3920b',
     bgColor1: '#FFFFFF',
   },
 

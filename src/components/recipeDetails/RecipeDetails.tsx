@@ -7,7 +7,7 @@ const RecipeDetails = ({recipe, onBack}) => {
       <Image source={{uri: recipe.image}} style={styles.image} />
       <Text style={styles.title}>{recipe.title}</Text>
       <Text style={styles.sectionTitle}>Ingredients:</Text>
-      {recipe.ingredients.map((ingredient, index) => (
+      {recipe.ingredients?.map((ingredient, index) => (
         <Text key={index} style={styles.text}>
           {ingredient}
         </Text>

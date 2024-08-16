@@ -1,50 +1,61 @@
 import React from 'react';
-import {View, Text, FlatList, Image, Button, StyleSheet} from 'react-native';
+import {Text, Image, StyleSheet, Pressable, View} from 'react-native';
+import Theme from '../../theme/Theme';
+import MasonryList from '@react-native-seoul/masonry-list';
+import Animated, {FadeIn, ZoomInDown} from 'react-native-reanimated';
+
+const RenderItem = ({item, index}: any) => {
+  let second = index % 2 == 0;
+  return (
+    <Animated.View entering={FadeIn.delay(index * 100)}>
+      <Pressable
+        style={[
+          styles.Container,
+          {marginLeft: second ? 0 : 5, marginRight: second ? 5 : 0},
+        ]}>
+        <Image
+          source={{uri: item.image}}
+          style={[styles.image, index % 3 == 0 ? {height: 300} : {height: 200}]}
+        />
+        <Text numberOfLines={2} style={styles.title}>
+          {item.title}
+        </Text>
+      </Pressable>
+    </Animated.View>
+  );
+};
 
 const RecipeList = ({recipes, onRecipeSelect, onFavorite}: any) => {
-  const renderItem = ({item}: any) => (
-    <View style={styles.item}>
-      <Image source={{uri: item.image}} style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Button title="View Details" onPress={() => onRecipeSelect(item.id)} />
-        <Button title="Save to Favorites" onPress={() => onFavorite(item)} />
-      </View>
-    </View>
-  );
-
   return (
-    <FlatList
+    <MasonryList
       data={recipes}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-      contentContainerStyle={styles.list}
+      keyExtractor={(item): string => item.id}
+      numColumns={2}
+      showsVerticalScrollIndicator={false}
+      renderItem={({item, i}: any) => <RenderItem item={item} index={i} />}
+      onEndReachedThreshold={0.1}
     />
   );
 };
 
 const styles = StyleSheet.create({
   list: {
-    padding: 10,
+    padding: Theme.fontSize.size5,
   },
-  item: {
-    flexDirection: 'row',
-    marginBottom: 15,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 10,
-    overflow: 'hidden',
+  Container: {
+    width: '95%',
+    marginBottom: Theme.fontSize.size25,
   },
   image: {
-    width: 100,
-    height: 100,
-  },
-  details: {
-    flex: 1,
-    padding: 10,
+    width: '100%',
+    borderRadius: Theme.fontSize.size20,
   },
   title: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: Theme.fontSize.size14,
+    fontWeight: '600',
+    color: Theme.colors.black,
+    marginTop: Theme.fontSize.size5,
+    marginLeft: Theme.fontSize.size5,
   },
 });
 
