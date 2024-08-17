@@ -3,44 +3,30 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ImageSourcePropType,
-  Image,
 } from 'react-native';
 import React from 'react';
 import Theme from '../../theme/Theme';
-import {useGlobal} from '../../context/GlobalContext';
 
-interface Props {
-  title: string;
-  style?: any;
-  lebalStyle?: any;
-  disabled?: boolean;
-  image?: ImageSourcePropType;
-  onPress: () => void;
-}
 
-let theme = Theme();
-export default function Buttons(props: Props) {
+export default function Buttons(props: any) {
   return (
     <>
       {props.disabled ? (
         <View
           style={[
-            styles.arriveButton,
+            styles.Button,
             props.style,
-            {backgroundColor: theme.colors.disabled},
+            {backgroundColor: Theme.colors.disable},
           ]}>
-          {props.image && <Image source={props.image} style={styles.img} />}
-          <Text style={[styles.arriveButtonText, props.lebalStyle]}>
+          <Text style={[styles.ButtonText, props.lebalStyle]}>
             {props.title}
           </Text>
         </View>
       ) : (
         <TouchableOpacity
-          style={styles.arriveButton}
+          style={[styles.Button, props.style]}
           onPress={() => props.onPress()}>
-          {props.image && <Image source={props.image} style={styles.img} />}
-          <Text style={[styles.arriveButtonText, props.lebalStyle]}>
+          <Text style={[styles.ButtonText, props.lebalStyle]}>
             {props.title}
           </Text>
         </TouchableOpacity>
@@ -50,24 +36,20 @@ export default function Buttons(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  arriveButton: {
-    borderRadius: theme.responsiveSize.size8,
-    paddingVertical: theme.responsiveSize.size10,
-    paddingHorizontal: theme.responsiveSize.size10,
+  Button: {
+    borderRadius: Theme.fontSize.size8,
+    paddingVertical: Theme.fontSize.size10,
+    paddingHorizontal: Theme.fontSize.size10,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: '95%',
     alignSelf: 'center',
+    backgroundColor: Theme.colors.AppColor,
   },
-  arriveButtonText: {
-    color: theme.colors.white,
-    fontSize: theme.responsiveSize.size16,
+  ButtonText: {
+    color: Theme.colors.white,
+    fontSize: Theme.fontSize.size16,
     fontWeight: '600',
-    fontFamily: 'Gotham-Medium',
-  },
-  img: {
-    width: theme.responsiveSize.size20,
-    height: theme.responsiveSize.size20,
   },
 });

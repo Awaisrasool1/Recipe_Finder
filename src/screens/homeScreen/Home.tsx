@@ -12,9 +12,10 @@ import LottieView from 'lottie-react-native';
 export default function HomeScreen({navigation}: any) {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    getData();
+    // getData();
   }, []);
   const getData = async () => {
     setLoading(true);
@@ -34,21 +35,25 @@ export default function HomeScreen({navigation}: any) {
       const data = await fetchRecipes(query);
       setRecipes(data);
       setLoading(false);
-    } catch (e:any) {
+    } catch (e: any) {
       ToastAndroid.show(e.response.data.message, ToastAndroid.LONG);
       setLoading(false);
     }
   };
 
-  const handleRecipeSelect = (id: any) => {
-    navigation.navigate(Constants.Recipe_Details, {id});
+  const navigationToSearchScreen = () => {
+    navigation.navigate(Constants.Search_Screen, {query: searchText});
+    setSearchText('')
   };
-
   return (
     <ScrollView style={styles.container}>
       <View style={{marginTop: 20}} />
       <Text style={styles.heading}>Make your own food, stay at home</Text>
-      <InputText />
+      <InputText
+        onPress={navigationToSearchScreen}
+        onChange={setSearchText}
+        value={searchText}
+      />
       <View style={{marginTop: 20}} />
       <Text style={styles.CategorieText}>Categorie</Text>
       <Categorie
@@ -67,7 +72,12 @@ export default function HomeScreen({navigation}: any) {
           />
         </View>
       ) : (
-        <RecipeList recipes={recipes} onRecipeSelect={handleRecipeSelect} />
+        <RecipeList
+          recipes={recipes}
+          onRecipeSelect={(id: any) => {
+            navigation.navigate(Constants.Recipe_Details, {id});
+          }}
+        />
       )}
     </ScrollView>
   );

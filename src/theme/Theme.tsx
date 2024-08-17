@@ -136,6 +136,9 @@ const Theme = {
   icons: {
     splash_logo: require('../resources/images/splashLogo.png'),
     search_icon: require('../resources/images/search.png'),
+    Favorites:require('../resources/images/heart.png'),
+    go_Back:require('../resources/images/bc.png'),
+    filter_icon:require('../resources/images/filter.png')
   },
 
   lottie: {

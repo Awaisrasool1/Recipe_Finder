@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   TextInput,
@@ -7,32 +7,22 @@ import {
   Image,
 } from 'react-native';
 import Theme from '../../theme/Theme';
-import {Constants} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
 
 const InputText = (props: any) => {
-  const [text, setText] = useState('');
-  const nav: any = useNavigation();
-
-  const handleSearch = () => {
-    console.log(props);
-    nav.navigate(Constants.Search_Screen, {query: text});
-  };
-
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Search recipes..."
-        value={text}
-        onChangeText={setText}
+        value={props.value}
+        onChangeText={(text: any) => props.onChange(text)}
         placeholderTextColor={Theme.colors.black}
       />
       <TouchableOpacity
-        disabled={!text}
+        disabled={!props.value}
         style={styles.icon}
         onPress={() => {
-          handleSearch();
+          props.onPress();
         }}>
         <Image
           source={Theme.icons.search_icon}
@@ -53,6 +43,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#eceeeb',
     paddingLeft: Theme.fontSize.size15,
+    paddingRight:Theme.fontSize.size55,
     fontSize: Theme.fontSize.size15,
     color: Theme.colors.black,
   },

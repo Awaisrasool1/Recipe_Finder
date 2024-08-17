@@ -16,12 +16,6 @@ export const fetchRecipeDetails = async (id: any) => {
   return response.data;
 };
 
-export const fetchRecipesByCategory = async (cuisine: any, mealType: any) => {
-  const response = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?cuisine=${cuisine}&mealType=${mealType}&apiKey=${API_KEY}`,
-  );
-  return response.data.results;
-};
 
 export const rendomRecipe = async () => {
   const response = await axios.get(
