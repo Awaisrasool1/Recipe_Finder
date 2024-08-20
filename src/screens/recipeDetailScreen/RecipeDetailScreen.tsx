@@ -21,6 +21,7 @@ export default function RecipeDetailScreen({route, navigation}: any) {
   const [recipe, setRecipe] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const regex = /(<([^>]+)>)/gi;
 
   useEffect(() => {
     const getRecipeDetails = async () => {
@@ -49,7 +50,7 @@ export default function RecipeDetailScreen({route, navigation}: any) {
     };
     getRecipeDetails();
   }, [id]);
-  
+
   const toggleFavorite = async () => {
     try {
       let userId = getuserID();
@@ -124,7 +125,9 @@ export default function RecipeDetailScreen({route, navigation}: any) {
             <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.title}>{recipe?.title}</Text>
               <Text style={styles.sectionTitle}>Instructions:</Text>
-              <Text style={styles.text}>{recipe?.instructions}</Text>
+              <Text style={styles.text}>
+                {recipe?.instructions?.replace(regex, '')}
+              </Text>
               <View style={{height: Theme.fontSize.size20}} />
             </ScrollView>
           </Animated.View>

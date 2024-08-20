@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: Theme.fontSize.size14,
     fontWeight: '700',
     color: Theme.colors.black,
-    width: '80%',
+    width: '77%',
   },
   heading: {
     fontSize: Theme.fontSize.size16,
