@@ -6,6 +6,9 @@ import FavoritesScreen from '../screens/favoritesScreen/FavoritesScreen';
 import RecipeDetailScreen from '../screens/recipeDetailScreen/RecipeDetailScreen';
 import SplashScreen from '../screens/splashScreen/SplashScreen';
 import SearchScreen from '../screens/searchScreen/SearchScreen';
+import SignInScreen from '../screens/auth/SignIn';
+import SignUp from '../screens/auth/SignUp';
+import BottomStack from './BottomStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +21,21 @@ const StackNavigation = () => {
         <Stack.Screen
           name={Constants.Splash_Screen}
           component={SplashScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.bottom_tabs}
+          component={BottomStack}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.Login_Screen}
+          component={SignInScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Constants.SignUp_Screen}
+          component={SignUp}
           options={{headerShown: false}}
         />
         <Stack.Screen

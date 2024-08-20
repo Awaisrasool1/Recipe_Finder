@@ -1,4 +1,11 @@
-import {View, Text, ScrollView, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  ToastAndroid,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
 import {InputText} from '../../components/inputText';
@@ -15,7 +22,7 @@ export default function HomeScreen({navigation}: any) {
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
   const getData = async () => {
     setLoading(true);
@@ -43,16 +50,29 @@ export default function HomeScreen({navigation}: any) {
 
   const navigationToSearchScreen = () => {
     navigation.navigate(Constants.Search_Screen, {query: searchText});
-    setSearchText('')
+    setSearchText('');
   };
   return (
     <ScrollView style={styles.container}>
       <View style={{marginTop: 20}} />
       <Text style={styles.heading}>Make your own food, stay at home</Text>
       <InputText
-        onPress={navigationToSearchScreen}
         onChange={setSearchText}
         value={searchText}
+        placeholder={'search recipe...'}
+        icon={
+          <TouchableOpacity
+            disabled={!searchText}
+            style={styles.icon}
+            onPress={() => {
+              navigationToSearchScreen();
+            }}>
+            <Image
+              source={Theme.icons.search_icon}
+              style={{width: 25, height: 25}}
+            />
+          </TouchableOpacity>
+        }
       />
       <View style={{marginTop: 20}} />
       <Text style={styles.CategorieText}>Categorie</Text>

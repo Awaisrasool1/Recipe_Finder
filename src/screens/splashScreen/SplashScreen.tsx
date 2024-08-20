@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, Animated, Image, Text} from 'react-native';
 import Theme from '../../theme/Theme';
-import Animateds, {FadeInDown, FadeInUp} from 'react-native-reanimated';
 import {Constants} from '../../utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveUserID} from '../../utils/Constants';
 
 const SplashScreen = (props: any) => {
   const ring1 = useRef(new Animated.Value(0)).current;
@@ -21,16 +22,44 @@ const SplashScreen = (props: any) => {
       }).start();
     }, 250);
     setTimeout(() => {
+      checkLogin();
+    }, 900);
+  }, []);
+
+  const checkLogin = async () => {
+    try {
+      const id = await AsyncStorage.getItem('userID');
+      if (id) {
+        saveUserID(id);
+        props.navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: Constants.bottom_tabs,
+            },
+          ],
+        });
+      } else {
+        props.navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: Constants.Login_Screen,
+            },
+          ],
+        });
+      }
+    } catch (e) {
       props.navigation.reset({
         index: 0,
         routes: [
           {
-            name: Constants.Home_Screen,
+            name: Constants.Login_Screen,
           },
         ],
       });
-    }, 900);
-  }, []);
+    }
+  };
 
   const padding = ring1.interpolate({
     inputRange: [0, 8],

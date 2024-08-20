@@ -31,11 +31,11 @@ export default function SearchScreen({route, navigation}: any) {
       handleSearch();
     }, [route?.params]),
   );
-  
+
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const data = await fetchRecipes(route?.params?.query);
+      const data = await fetchRecipes(searchText);
       setRecipes(data);
       setLoading(false);
     } catch (e: any) {
@@ -65,13 +65,26 @@ export default function SearchScreen({route, navigation}: any) {
     }
   };
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.flxRow}>
         <View style={{width: '85%'}}>
           <InputText
-            onPress={handleSearch}
             onChange={setSearchText}
             value={searchText}
+            placeholder={'search recipe...'}
+            icon={
+              <TouchableOpacity
+                disabled={!searchText}
+                style={styles.icon}
+                onPress={() => {
+                  handleSearch();
+                }}>
+                <Image
+                  source={Theme.icons.search_icon}
+                  style={{width: 25, height: 25}}
+                />
+              </TouchableOpacity>
+            }
           />
         </View>
         <TouchableOpacity
@@ -80,32 +93,36 @@ export default function SearchScreen({route, navigation}: any) {
           <Image source={Theme.icons.filter_icon} style={styles.fliterImg} />
         </TouchableOpacity>
       </View>
-      <Text style={styles.CategorieText}>Recipes</Text>
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <LottieView
-            style={{height: 40, width: 40}}
-            source={Theme.lottie.loading}
-            autoPlay
-            loop={true}
+      <View style={{marginBottom:10}}/>
+
+      <ScrollView>
+        <Text style={styles.CategorieText}>Recipes</Text>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <LottieView
+              style={{height: 40, width: 40}}
+              source={Theme.lottie.loading}
+              autoPlay
+              loop={true}
+            />
+          </View>
+        ) : (
+          <RecipeList
+            recipes={recipes}
+            onRecipeSelect={(id: any) => {
+              navigation.navigate(Constants.Recipe_Details, {id});
+            }}
           />
-        </View>
-      ) : (
-        <RecipeList
-          recipes={recipes}
-          onRecipeSelect={(id: any) => {
-            navigation.navigate(Constants.Recipe_Details, {id});
-          }}
+        )}
+        <BottomSheet
+          refRBSheet={refRBSheet}
+          setSelectedCategories={setSelectedCategories}
+          selectedCategories={selectedCategories}
+          foodCategories={foodCategories}
+          onPress={sendCategoriesToApi}
         />
-      )}
-      <BottomSheet
-        refRBSheet={refRBSheet}
-        setSelectedCategories={setSelectedCategories}
-        selectedCategories={selectedCategories}
-        foodCategories={foodCategories}
-        onPress={sendCategoriesToApi}
-      />
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -145,5 +162,13 @@ const styles = StyleSheet.create({
   loadingContainer: {
     alignSelf: 'center',
     marginTop: Theme.fontSize.size30,
+  },
+  icon: {
+    position: 'absolute',
+    right: -Theme.fontSize.size5,
+    top: -Theme.fontSize.size5,
+    backgroundColor: Theme.colors.white,
+    padding: Theme.fontSize.size7,
+    borderRadius: Theme.fontSize.size30,
   },
 });

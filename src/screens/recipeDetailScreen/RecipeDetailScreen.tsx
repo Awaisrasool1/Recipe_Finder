@@ -13,11 +13,14 @@ import {fetchRecipeDetails} from '../../services/Get';
 import {Loader} from '../../components/Loader';
 import Theme from '../../theme/Theme';
 import Animated, {FadeInDown} from 'react-native-reanimated';
+import firestore from '@react-native-firebase/firestore';
+import {getuserID} from '../../utils/Constants';
 
 export default function RecipeDetailScreen({route, navigation}: any) {
   const {id} = route.params;
   const [recipe, setRecipe] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const getRecipeDetails = async () => {
@@ -25,8 +28,20 @@ export default function RecipeDetailScreen({route, navigation}: any) {
       try {
         const data = await fetchRecipeDetails(id);
         setRecipe(data);
+        const userId = getuserID();
+        const favoriteDoc = await firestore()
+          .collection('favorites')
+          .doc(id.toString())
+          .get();
+
+        if (favoriteDoc.exists && favoriteDoc.data()?.userId === userId) {
+          setIsFavorite(true);
+        }
       } catch (e: any) {
-        ToastAndroid.show(e.response.data.message, ToastAndroid.LONG);
+        ToastAndroid.show(
+          e.response?.data?.message || 'Error fetching details',
+          ToastAndroid.LONG,
+        );
       }
       setTimeout(() => {
         setLoading(false);
@@ -34,6 +49,33 @@ export default function RecipeDetailScreen({route, navigation}: any) {
     };
     getRecipeDetails();
   }, [id]);
+  
+  const toggleFavorite = async () => {
+    try {
+      let userId = getuserID();
+      const favoriteRef = firestore()
+        .collection('favorites')
+        .doc(id.toString());
+      if (isFavorite) {
+        await favoriteRef.delete();
+        ToastAndroid.show('Recipe removed from favorites!', ToastAndroid.SHORT);
+      } else {
+        await favoriteRef.set({
+          id: recipe.id,
+          userId: userId,
+          title: recipe.title,
+          image: recipe.image,
+          instructions: recipe.instructions,
+        });
+        ToastAndroid.show('Recipe added to favorites!', ToastAndroid.SHORT);
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show('Failed to update favorites.', ToastAndroid.SHORT);
+    }
+  };
+
   return (
     <>
       {recipe && (
@@ -43,12 +85,37 @@ export default function RecipeDetailScreen({route, navigation}: any) {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Image source={Theme.icons.go_Back} style={styles.iconImg} />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  source={Theme.icons.Favorites}
-                  style={{tintColor: 'black', width: 55, height: 55}}
-                />
-              </TouchableOpacity>
+              {isFavorite ? (
+                <TouchableOpacity
+                  onPress={toggleFavorite}
+                  style={{
+                    width: 45,
+                    height: 45,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: Theme.colors.AppColor,
+                    borderRadius: Theme.fontSize.size10,
+                  }}>
+                  <Image
+                    source={Theme.icons.fav}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      tintColor: 'white',
+                    }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={toggleFavorite}>
+                  <Image
+                    source={Theme.icons.Favorites}
+                    style={{
+                      width: 45,
+                      height: 45,
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </ImageBackground>
           <Animated.View

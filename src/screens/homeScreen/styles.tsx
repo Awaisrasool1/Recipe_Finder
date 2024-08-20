@@ -20,10 +20,18 @@ const styles = StyleSheet.create({
     marginLeft: Theme.fontSize.size10,
     marginBottom: Theme.fontSize.size10,
   },
-  loadingContainer:{
-    alignSelf:'center',
-    marginTop:Theme.fontSize.size30
-  }
+  loadingContainer: {
+    alignSelf: 'center',
+    marginTop: Theme.fontSize.size30,
+  },
+  icon: {
+    position: 'absolute',
+    right: -Theme.fontSize.size5,
+    top: -Theme.fontSize.size5,
+    backgroundColor: Theme.colors.white,
+    padding: Theme.fontSize.size7,
+    borderRadius: Theme.fontSize.size30,
+  },
 });
 
 export default styles;

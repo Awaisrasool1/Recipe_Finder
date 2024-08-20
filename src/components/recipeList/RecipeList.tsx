@@ -28,7 +28,7 @@ const RenderItem = ({item, index, onRecipeSelect}: any) => {
   );
 };
 
-const RecipeList = ({recipes, onRecipeSelect, onFavorite}: any) => {
+const RecipeList = ({recipes, onRecipeSelect}: any) => {
   return (
     <MasonryList
       data={recipes}

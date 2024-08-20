@@ -136,9 +136,20 @@ const Theme = {
   icons: {
     splash_logo: require('../resources/images/splashLogo.png'),
     search_icon: require('../resources/images/search.png'),
-    Favorites:require('../resources/images/heart.png'),
-    go_Back:require('../resources/images/bc.png'),
-    filter_icon:require('../resources/images/filter.png')
+    Favorites: require('../resources/images/dil.png'),
+    Favorites1:require('../resources/images/heart.png'),
+    go_Back: require('../resources/images/bc.png'),
+    filter_icon: require('../resources/images/filter.png'),
+    login_Login: require('../resources/images/login.jpg'),
+    login_GoBack: require('../resources/images/goBack.png'),
+    eye1: require('../resources/images/eye1.png'),
+    eye2: require('../resources/images/eye2.png'),
+    home: require('../resources/images/home.png'),
+    home_active: require('../resources/images/home1.png'),
+    profile: require('../resources/images/profile.png'),
+    profile_active: require('../resources/images/profile1.png'),
+    fav: require('../resources/images/fav.png'),
+    fav_active: require('../resources/images/fav1.png'),
   },
 
   lottie: {

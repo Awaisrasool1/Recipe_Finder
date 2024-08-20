@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Image, Text, View} from 'react-native';
 import {Constants} from '../utils';
@@ -6,35 +6,24 @@ import Theme from '../theme/Theme';
 import {styles} from './styles';
 import HomeScreen from '../screens/homeScreen/Home';
 import FavoritesScreen from '../screens/favoritesScreen/FavoritesScreen';
-import RecipeDetailScreen from '../screens/recipeDetailScreen/RecipeDetailScreen';
+import Profile from '../screens/profile/Profile';
 
 const Tab = createMaterialBottomTabNavigator();
+
 function BottomStack() {
   return (
     <Tab.Navigator
       initialRouteName={Constants.Home_Screen}
-      activeColor={''}
-      style={{
-        backgroundColor: 'white',
-        // borderTopLeftRadius: theme.responsiveSize.size30,
-        // borderTopRightRadius: theme.responsiveSize.size30,
-      }}
+      activeColor={Theme.colors.AppColor}
       labeled={false}
       shifting={false}
       barStyle={{
         backgroundColor: Theme.colors.white,
-        borderTopLeftRadius: Theme.fontSize.size30,
-        borderTopRightRadius: Theme.fontSize.size30,
-        height: Theme.fontSize.size75,
-        position: 'absolute',
+        height: Theme.fontSize.size65,
         borderWidth: 0.5,
-        borderColor: '',
-        overflow: 'hidden',
+        borderColor: Theme.colors.disable,
         paddingHorizontal: Theme.fontSize.size15,
-        paddingTop: Theme.fontSize.size5,
-        left: 0,
-        right: 0,
-        // justifyContent: 'space-evenly'
+        elevation:Theme.fontSize.size5
       }}>
       <Tab.Screen
         name={Constants.Home_Screen}
@@ -45,24 +34,17 @@ function BottomStack() {
           tabBarIcon: ({color, focused}) => (
             <>
               {focused ? (
-                <View style={[styles.image_wrapper, {backgroundColor: color}]}>
+                <View style={styles.image_wrapper}>
                   <Image
-                    source={Theme.icons.search_icon}
+                    source={Theme.icons.home_active}
                     style={styles.image}
                     resizeMode="contain"
                   />
-                  <Text
-                    style={{
-                      color: Theme.colors.white,
-                      fontSize: Theme.fontSize.size10,
-                    }}>
-                    {'Home'}
-                  </Text>
                 </View>
               ) : (
                 <Image
-                  source={Theme.icons.search_icon}
-                  style={{width: 22, height: 22}}
+                  source={Theme.icons.home}
+                  style={styles.image}
                   resizeMode="contain"
                 />
               )}
@@ -78,23 +60,16 @@ function BottomStack() {
           tabBarIcon: ({color, focused}) => (
             <>
               {focused ? (
-                <View style={[styles.image_wrapper, {backgroundColor: color}]}>
+                <View style={styles.image_wrapper}>
                   <Image
-                    source={Theme.icons.search_icon}
+                    source={Theme.icons.fav_active}
                     style={styles.image}
                     resizeMode="contain"
                   />
-                  <Text
-                    style={{
-                      color: Theme.colors.white,
-                      fontSize: Theme.fontSize.size10,
-                    }}>
-                    'Students'
-                  </Text>
                 </View>
               ) : (
                 <Image
-                  source={Theme.icons.search_icon}
+                  source={Theme.icons.fav}
                   style={{width: 22, height: 22}}
                   resizeMode="contain"
                 />
@@ -104,30 +79,23 @@ function BottomStack() {
         }}
       />
       <Tab.Screen
-        name={Constants.Recipe_Details}
-        component={RecipeDetailScreen}
+        name={Constants.Profile_Screen}
+        component={Profile}
         options={{
           tabBarLabel: 'Lessons',
           tabBarIcon: ({color, focused}) => (
             <>
               {focused ? (
-                <View style={[styles.image_wrapper, {backgroundColor: color}]}>
+                <View style={styles.image_wrapper}>
                   <Image
-                    source={Theme.icons.search_icon}
+                    source={Theme.icons.profile_active}
                     style={styles.image}
                     resizeMode="contain"
                   />
-                  <Text
-                    style={{
-                      color: Theme.colors.white,
-                      fontSize: Theme.fontSize.size10,
-                    }}>
-                    {'Lessons'}
-                  </Text>
                 </View>
               ) : (
                 <Image
-                  source={Theme.icons.search_icon}
+                  source={Theme.icons.profile}
                   style={{width: 22, height: 22}}
                   resizeMode="contain"
                 />
