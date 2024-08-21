@@ -20,10 +20,10 @@ const SplashScreen = (props: any) => {
         toValue: 1,
         useNativeDriver: false,
       }).start();
-    }, 250);
+    }, 300);
     setTimeout(() => {
       checkLogin();
-    }, 900);
+    }, 1000);
   }, []);
 
   const checkLogin = async () => {
