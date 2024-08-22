@@ -15,6 +15,7 @@ const SplashScreen = (props: any) => {
         toValue: 1,
         useNativeDriver: false,
       }).start();
+      
       //
       Animated.spring(ring2, {
         toValue: 1,
